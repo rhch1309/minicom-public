@@ -6,9 +6,15 @@ LISTEN_PORT=8009
 
 echo "Serving $WWW_ROOT on http://$LISTEN_HOST:$LISTEN_PORT (^C to stop)."
 
-cd $WWW_ROOT && python3 -m http.server $LISTEN_PORT \
-|| ruby -run -e httpd $WWW_ROOT -p $LISTEN_PORT -- -c "CacheDisable on" 2>/dev/null \
-|| php -S "$LISTEN_HOST:$LISTEN_PORT" -t $WWW_ROOT 2>/dev/null \
-|| npx serve $WWW_ROOT -l $LISTEN_PORT 2>/dev/null \
-|| printf "\n=======================\nERROR: Bar Server not started\nIt appears you don't have the required dependencies to start the Bar server.\n\n1) Install the Node LTS from https://nodejs.org/\n2) Open a new terminal window\n3) Re-run this script again.\n=======================\n" >&2
+for tool in python3 ruby php npx; do
+  command -v "$tool" >/dev/null 2>&1 || continue
+  case "$tool" in
+    python3) cd "$WWW_ROOT" && exec python3 -m http.server "$LISTEN_PORT" ;;
+    ruby)    exec ruby -run -e httpd "$WWW_ROOT" -p "$LISTEN_PORT" -- -c "CacheDisable on" ;;
+    php)     exec php -S "$LISTEN_HOST:$LISTEN_PORT" -t "$WWW_ROOT" ;;
+    npx)     exec npx serve "$WWW_ROOT" -l "$LISTEN_PORT" ;;
+  esac
+done
+
+printf "\n=======================\nERROR: Bar Server not started\nIt appears you don't have the required dependencies to start the Bar server.\n\n1) Install the Node LTS from https://nodejs.org/\n2) Open a new terminal window\n3) Re-run this script again.\n=======================\n" >&2
 exit 1

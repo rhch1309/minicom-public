@@ -7,33 +7,33 @@ set LISTEN_PORT=8008
 
 echo "Serving %WWW_ROOT% on http://%LISTEN_HOST%:%LISTEN_PORT% (^C to stop)."
 
-for /f %%i in ('python3 --version 2^>nul') do set PYTHON_VERSION=%%i
-for /f %%i in ('ruby --version 2^>nul') do set RUBY_VERSION=%%i
-for /f %%i in ('php -v 2^>nul') do set PHP_VERSION=%%i
-for /f %%i in ('npx --version 2^>nul') do set NPX_VERSION=%%i
-
-IF /I "%PYTHON_VERSION%" NEQ "" (
-    cd %WWW_ROOT% && python3 -m http.server %LISTEN_PORT%
-) ELSE IF /I "%RUBY_VERSION%" NEQ "" (
-    ruby -run -e httpd %WWW_ROOT% -p %LISTEN_PORT% -- -c "CacheDisable on"
-) ELSE IF /I "%PHP_VERSION%" NEQ "" (
-    php -S "%LISTEN_HOST%:%LISTEN_PORT%" -t %WWW_ROOT%
-) ELSE IF /I "%NPX_VERSION%" NEQ "" (
-    npx serve %WWW_ROOT% -l %LISTEN_PORT%
-) ELSE (
-    echo.
-    echo.
-    echo ERROR: Foo Server not started
-    echo.
-    echo It appears you don't have the required dependencies to start the Foo server.
-    echo.
-    echo.
-    echo 1. Install the Node LTS from https://nodejs.org/
-    echo.
-    echo 2. Open a new terminal window
-    echo.
-    echo 3. Re-run this script again.
-    echo.
-    echo =======================
-    echo.
+for %%S in (python3 ruby php npx) do (
+    where /q %%S && (
+        call :serve %%S
+        exit /b
+    )
 )
+
+echo.
+echo.
+echo ERROR: Foo Server not started
+echo.
+echo It appears you don't have the required dependencies to start the Foo server.
+echo.
+echo.
+echo 1. Install the Node LTS from https://nodejs.org/
+echo.
+echo 2. Open a new terminal window
+echo.
+echo 3. Re-run this script again.
+echo.
+echo =======================
+echo.
+exit /b 1
+
+:serve
+if /I "%~1"=="python3" ( cd %WWW_ROOT% && python3 -m http.server %LISTEN_PORT% )
+if /I "%~1"=="ruby" ( ruby -run -e httpd %WWW_ROOT% -p %LISTEN_PORT% -- -c "CacheDisable on" )
+if /I "%~1"=="php" ( php -S "%LISTEN_HOST%:%LISTEN_PORT%" -t %WWW_ROOT% )
+if /I "%~1"=="npx" ( npx serve %WWW_ROOT% -l %LISTEN_PORT% )
+goto :eof
