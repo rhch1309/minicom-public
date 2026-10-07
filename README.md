@@ -1,6 +1,6 @@
 # Minicom
 
-Welcome to Minicom! A prototype Intercom service. This is a project to help you set up for your interview later on. Inside this directory you'll find a foo website, a bar website, and servers that represent a simplified version of how Intercom works.
+Welcome to Minicom! A prototype Intercom service. This is a project to help you set up for your interview later on. Inside this directory you'll find a foo website, a bar website, and a Django server that represents a simplified version of how Intercom works.
 
 # What do I have to do?
 
@@ -15,32 +15,14 @@ Follow the setup instructions mentioned in the sections below and once that is a
 
 ## Installation
 
-Choose your preferred framework. The current choices available are:
-```
-rails
-java
-node
-django
-```
-anywhere you see `{your-framework}` in the instructions below, replace it with the keyword above.
-
-Run the command that matches your framework to install it.
-
-**The Java backend requires JDK 21 or newer.**
+This project uses the Django framework. Run the command below to install it.
 
 ```
 # Mac/Linux/Windows with WSL (Windows Subsystem for Linux)
-script/{your-framework}/setup
+script/django/setup
 
 # Windows without WSL (Windows Subsystem for Linux)
-script\{your-framework}\setup
-
-(examples)
-
-script/rails/setup
-script/java/setup
-script/node/setup
-script/django/setup
+script\django\setup
 ```
 
 ## Getting started
@@ -50,7 +32,7 @@ Run the following commands in 3 different terminal windows:
 ```
 script/foo/start
 script/bar/start
-script/{your-framework}/start
+script/django/start
 ```
 
 This will get you the foo site running at http://127.0.0.1:8008, the bar interface running at http://127.0.0.1:8009 and a webserver running at http://127.0.0.1:3000.
@@ -66,16 +48,13 @@ A quick overview of the application structure:
 - **foo/** -- The root of the foo interface.
 - **bar/** -- The root of the bar website.
 
-Your framework will have a folder with it's name and have 2 endpoints:
+The Django server has 2 endpoints:
 
 - **POST /foo/** (validates that the frontend can talk to backend)
 - **POST /bar/** (validates that the frontend can talk to backend)
 
 ### Folders
 
-Each Server framework is in its own folder (named after the framework) and has its own Readme. You can safely ignore anything in the frameworks that you are not using.
+The Django server lives in its own folder and has its own Readme.
 
-- [Rails](./rails/README.md)
-- [Java](./java/README.md)
 - [Django](./django/README.md)
-- [Node](./node/README.md)

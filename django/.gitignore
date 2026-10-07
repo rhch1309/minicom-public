@@ -1,16 +1,2 @@
-# Virtual environment
-venv/
-
-# Database
-*.sqlite3
-db.sqlite3
-
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-
-# Django
-*.log
-local_settings.py
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*
