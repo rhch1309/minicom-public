@@ -47,7 +47,7 @@ The Bar website is identical, just hitting `/bar` instead of `/foo`.
 
 ## Supporting pieces
 
-- **Static file servers** — `script/foo/start` and `script/bar/start` do not use Django; they just serve the static HTML/JS/CSS folders. The scripts auto-detect an available tool (Ruby → PHP → `npx serve` → Python's `http.server`) to host the files on ports 8008/8009.
+- **Static file servers** — `script/foo/start` and `script/bar/start` do not use Django; they just serve the static HTML/JS/CSS folders. The scripts prefer Python's `http.server` and fall back to other available tools (Ruby → PHP → `npx serve`) to host the files on ports 8008/8009. The fallback version checks are silenced so missing tools do not print warnings.
 - **Django server** — `script/django/start` activates the virtual environment and runs `manage.py runserver 3000`.
 - **Database** — A SQLite `db.sqlite3` exists and migrations run during setup, but the current `verify` endpoint does not actually use the DB. It is scaffolding for extending the app during the interview.
 
