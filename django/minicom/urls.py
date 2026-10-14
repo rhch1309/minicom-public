@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
+from debug_toolbar.toolbar import debug_toolbar_urls
+from django.urls import path
 
 from minicom import api
 
@@ -26,4 +27,4 @@ urlpatterns = [
 
     path('foo', api.verify),
     path('bar', api.verify)
-]
+] + debug_toolbar_urls()

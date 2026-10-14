@@ -12,6 +12,45 @@ It is an interview setup exercise: if you can get both websites to pop up `Yay! 
 | **Bar website** | http://127.0.0.1:8009 | A mock customer site B |
 | **Django backend** | http://127.0.0.1:3000 | The shared "Intercom" server both sites call |
 
+## Setup and run
+
+These are the exact steps used to set this project up (Windows, Django framework). Run everything from the project root.
+
+### 1. One-time setup
+
+```bat
+script\django\setup
+```
+
+This script (`script/django/setup.bat`):
+
+1. Creates a Python virtual environment **inside** the `django/` folder (`python3 -m venv .`) — so the venv files land in `django/Scripts`, `django/Lib`, etc., not a `.venv` subfolder.
+2. Activates it and installs dependencies from `django/requirements.txt` (`Django`, `django-cors-headers`).
+3. Runs `manage.py makemigrations` (prints `No changes detected` — the `minicom` app has no models) and `manage.py migrate`, which creates `django/db.sqlite3` with Django's built-in tables.
+
+### 2. Start the three servers
+
+Open **three** terminals at the project root and run one command in each:
+
+```bat
+script\foo\start      REM foo website  -> http://127.0.0.1:8008
+script\bar\start      REM bar website  -> http://127.0.0.1:8009
+script\django\start   REM Django API   -> http://127.0.0.1:3000
+```
+
+(On macOS/Linux use the forward-slash equivalents, e.g. `script/foo/start`.)
+
+### 3. Verify
+
+Open each site in a browser and confirm the alert fires:
+
+- http://127.0.0.1:8008 → `Yay! Everything works`
+- http://127.0.0.1:8009 → `Yay! Everything works`
+
+If both alerts appear, the frontend ↔ backend wiring is working and setup is complete.
+
+> **Schema changes later:** because migrations behave poorly against SQLite, recreate the DB instead of altering it — from `django/` (venv active): delete `db.sqlite3`, then run `manage.py makemigrations` and `manage.py migrate`.
+
 ## How it works end-to-end
 
 ```mermaid
